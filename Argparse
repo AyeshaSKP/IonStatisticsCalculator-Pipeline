@@ -1,0 +1,33 @@
+ # argparse has been used for user experience. User can choose ay value for start, end , binszie, mode and stepsize to see the data.
+    
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("f_object", help="name of file containing data")# a positional argument
+parser.add_argument("-s", "--start",  help="lower bound of m/z range", type=float)
+parser.add_argument("-e", "--end",    help="upper bound of m/z range", type=float)
+parser.add_argument("-b", "--binsize", default = 1.0, type= float,  help="binsize in m/z units")
+parser.add_argument("-m", "--mode", default =1, type= int,  help="mode1 for peptide number in m/z value, mode2 for couting peptide number in bin and mode3 for sliding window ")
+parser.add_argument("-k", "--stepsize",default = 1.0, type= float,  help="stepsize in m/z units")
+
+args = parser.parse_args()
+
+
+
+file = args.f_object
+range0 = args.start
+range1 = args.end
+binsize = args.binsize
+mode = args.mode
+stepsize = args.stepsize
+
+### Main Program for mode1, mode2 and mode3. mode1 counts the peptide number in specific m/z range, mode2 counts the peptide number in specific bin range and mode3 calculates by using window size and step size.
+
+peps = read_file(file)
+if mode == 1:
+    mode1(peps,range0,range1)
+elif mode == 2:
+    mode2(peps, binsize, range0, range1)
+elif mode == 3:
+    mode3(peps, binsize, range0, range1, stepsize)
+
+
