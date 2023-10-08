@@ -1,0 +1,55 @@
+#Function for reading file: split the tab-separated line and convert the pepmass into a float. A unique identifier has been created by joining the proteins pepnum and pepseq. By using pepid as the key, pepmass has been stored in the peps dictionary.
+import numpy as np
+def read_file(file):
+    peps  = {} 
+    f_object = open(file)
+    
+    for line in f_object:
+        protein = line.split('\t')[0]
+        pepnumber = line.split('\t')[1]
+        pepmasses = line.split('\t')[2]
+        pepseq = line.split('\t')[5]
+        pepmass =float(pepmasses)
+        pepnum = pepnumber
+        l = pepnum
+        n = [protein, pepnum, pepseq]
+        m = [pepnum,pepmass]
+        pepid = '_'.join(n)
+        
+        
+        peps[pepid]= pepmass
+    return(peps)
+# The following are three functions that take peps from a specific range (mode 1), range and binsize (mode 2), and range, binsize, and stepsize (mode 3) and give results for specific mass values.
+def mode1(peps, range0, range1):
+    count = 0
+    
+    for mass in peps.values():
+        if range0< mass< range1:
+            count += 1
+    print(f'Counting the nummber of peptides between {range0} and {range1}: {count}')
+
+def  mode2(peps, binsize, range0, range1):
+    count = 0
+    
+    for i in np.arange(range0,range1,binsize):
+        count =0
+        bin_name = (f'{i}-{i+binsize}')
+        
+        for mass in peps.values():
+            if i < mass < i+binsize:
+                count +=1
+                
+        print (f'Counting the number of peptides in {bin_name} :{count}')
+        
+def  mode3(peps, binsize, range0, range1, stepsize):
+    count = 0
+    
+    for i in np.arange(range0,range1,stepsize):
+        count =0
+        bin_name = (f'{i}-{i+binsize}')
+        
+        for mass in peps.values():
+            if i < mass < i+binsize:
+                count +=1
+                
+        print (f'Counting the number of peptides in {bin_name} :{count}')
